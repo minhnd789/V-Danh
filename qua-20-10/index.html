@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1a0f2e">
+  <title>Gửi em yêu · 20/10</title>
+  <meta name="description" content="Món quà 20-10 dành cho em: pháo hoa nổ thành trái tim, vườn hoa không bao giờ tàn, gấu bông và một lá thư.">
+  <meta property="og:title" content="Gửi em yêu · 20/10">
+  <meta property="og:description" content="Một món quà nhỏ, một tình yêu thật lớn ❤">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9D%A4%EF%B8%8F%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Quicksand:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <canvas id="fx-canvas" aria-hidden="true"></canvas>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <main id="app">
+
+    <!-- ===================== 0. MỞ QUÀ ===================== -->
+    <section class="scene is-active" id="scene-intro" data-scene="0">
+      <div class="scene-inner">
+        <p class="kicker" data-text="intro.kicker"></p>
+        <p class="date-badge" data-text="dateText"></p>
+        <h1 class="title-script" data-text="intro.title"></h1>
+        <p class="subtitle" data-text="intro.subtitle"></p>
+
+        <button class="gift-box no-fire" id="gift-box" aria-label="Mở quà">
+          <span class="gift-glow"></span>
+          <span class="gift-body"><span class="gift-ribbon-v"></span></span>
+          <span class="gift-lid">
+            <span class="gift-bow"><i></i><i></i><b></b></span>
+          </span>
+        </button>
+        <p class="hint" data-text="intro.hint"></p>
+      </div>
+    </section>
+
+    <!-- ===================== 1. PHÁO HOA ===================== -->
+    <section class="scene" id="scene-fireworks" data-scene="1">
+      <div class="scene-inner">
+        <p class="kicker">20 · 10</p>
+        <h2 class="title-script" data-text="fireworks.title"></h2>
+        <p class="subtitle" data-text="fireworks.subtitle"></p>
+        <p class="hint" data-text="fireworks.hint"></p>
+        <div class="btn-row delayed">
+          <button class="btn next-btn" data-text="fireworks.next"></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 2. HOA & GẤU ===================== -->
+    <section class="scene" id="scene-flowers" data-scene="2">
+      <div class="scene-inner wide">
+        <h2 class="title-script small" data-text="flowers.title"></h2>
+
+        <div class="garden" id="garden">
+          <div class="sparkles" aria-hidden="true">
+            <i style="--x:8%;--y:18%;--d:0s"></i><i style="--x:88%;--y:12%;--d:.7s"></i>
+            <i style="--x:20%;--y:70%;--d:1.3s"></i><i style="--x:70%;--y:60%;--d:.4s"></i>
+            <i style="--x:50%;--y:6%;--d:1.9s"></i><i style="--x:92%;--y:78%;--d:1s"></i>
+          </div>
+
+          <!-- Bó hoa: sinh bằng JS -->
+          <svg id="bouquet" viewBox="0 0 400 520" role="img" aria-label="Bó hoa"></svg>
+
+          <!-- Gấu bông ôm trái tim -->
+          <svg id="bear" viewBox="0 0 300 340" role="img" aria-label="Gấu bông ôm trái tim">
+            <defs>
+              <radialGradient id="furGrad" cx="40%" cy="35%" r="75%">
+                <stop offset="0" stop-color="#dba572"/><stop offset="1" stop-color="#b57647"/>
+              </radialGradient>
+              <radialGradient id="bellyGrad" cx="50%" cy="40%" r="70%">
+                <stop offset="0" stop-color="#f6dfc0"/><stop offset="1" stop-color="#e3bd92"/>
+              </radialGradient>
+              <linearGradient id="heartGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#ff7aa8"/><stop offset="1" stop-color="#e5173f"/>
+              </linearGradient>
+            </defs>
+            <ellipse class="bear-shadow" cx="150" cy="324" rx="96" ry="12" fill="rgba(0,0,0,.3)"/>
+            <!-- chân -->
+            <ellipse cx="104" cy="288" rx="40" ry="30" fill="url(#furGrad)"/>
+            <ellipse cx="196" cy="288" rx="40" ry="30" fill="url(#furGrad)"/>
+            <ellipse cx="98" cy="294" rx="20" ry="14" fill="#ecccA6"/>
+            <ellipse cx="202" cy="294" rx="20" ry="14" fill="#ecccA6"/>
+            <!-- thân -->
+            <ellipse cx="150" cy="232" rx="84" ry="78" fill="url(#furGrad)"/>
+            <ellipse cx="150" cy="246" rx="54" ry="54" fill="url(#bellyGrad)"/>
+            <!-- tay phải (ôm tim) -->
+            <ellipse cx="226" cy="224" rx="22" ry="42" transform="rotate(-30 226 224)" fill="url(#furGrad)"/>
+            <!-- trái tim -->
+            <g class="bear-heart">
+              <path transform="translate(236 228) scale(2.5)"
+                    d="M0 -5 C0 -8 -4 -12 -8 -12 C-13 -12 -16 -8 -16 -3 C-16 3 -10 8 0 14 C10 8 16 3 16 -3 C16 -8 13 -12 8 -12 C4 -12 0 -8 0 -5 Z"
+                    fill="url(#heartGrad)" stroke="#fff" stroke-opacity=".55" stroke-width="1.2"/>
+              <ellipse cx="224" cy="208" rx="7" ry="3.6" fill="#fff" fill-opacity=".6" transform="rotate(-32 224 208)"/>
+            </g>
+            <!-- bàn tay phải đè lên tim -->
+            <ellipse cx="216" cy="250" rx="15" ry="11" fill="#c98a5b"/>
+            <!-- tay trái vẫy -->
+            <g class="bear-arm-wave">
+              <ellipse cx="66" cy="176" rx="20" ry="44" transform="rotate(-38 66 176)" fill="url(#furGrad)"/>
+              <circle cx="40" cy="140" r="13" fill="#ecccA6"/>
+            </g>
+            <!-- đầu -->
+            <g class="bear-head">
+              <circle cx="98" cy="64" r="30" fill="url(#furGrad)"/><circle cx="98" cy="64" r="16" fill="#ecccA6"/>
+              <circle cx="202" cy="64" r="30" fill="url(#furGrad)"/><circle cx="202" cy="64" r="16" fill="#ecccA6"/>
+              <circle cx="150" cy="118" r="72" fill="url(#furGrad)"/>
+              <ellipse cx="150" cy="146" rx="38" ry="28" fill="#f0d3ae"/>
+              <path d="M136 132 Q150 124 164 132 Q160 148 150 150 Q140 148 136 132 Z" fill="#4a2c1a"/>
+              <path d="M150 150 L150 160 M150 160 C142 168 132 166 128 158 M150 160 C158 168 168 166 172 158"
+                    fill="none" stroke="#4a2c1a" stroke-width="3.5" stroke-linecap="round"/>
+              <ellipse cx="102" cy="140" rx="13" ry="7" fill="#ff8fab" fill-opacity=".55"/>
+              <ellipse cx="198" cy="140" rx="13" ry="7" fill="#ff8fab" fill-opacity=".55"/>
+              <g class="bear-eyes">
+                <circle cx="124" cy="112" r="8" fill="#2b1b12"/><circle cx="176" cy="112" r="8" fill="#2b1b12"/>
+                <circle cx="127" cy="109" r="3" fill="#fff"/><circle cx="179" cy="109" r="3" fill="#fff"/>
+              </g>
+              <g class="bear-bow">
+                <path d="M150 188 L120 174 L120 202 Z" fill="#ff4d6d"/>
+                <path d="M150 188 L180 174 L180 202 Z" fill="#ff4d6d"/>
+                <circle cx="150" cy="188" r="7" fill="#ff8fab"/>
+              </g>
+            </g>
+          </svg>
+        </div>
+
+        <p class="lines" data-lines="flowers.lines"></p>
+        <div class="btn-row">
+          <button class="btn next-btn" data-text="flowers.next"></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 3. BỨC THƯ ===================== -->
+    <section class="scene" id="scene-letter" data-scene="3">
+      <div class="scene-inner">
+        <h2 class="title-script small" data-text="letter.title"></h2>
+
+        <div class="envelope-wrap no-fire" id="envelope-wrap">
+          <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Mở thư">
+            <div class="env-back"></div>
+            <div class="env-letter"><span>❤</span></div>
+            <div class="env-front"></div>
+            <div class="env-flap"></div>
+            <div class="env-seal">♥</div>
+          </div>
+          <button class="btn" id="open-letter-btn" data-text="letter.openButton"></button>
+        </div>
+
+        <article class="letter-paper no-fire" id="letter-paper" hidden>
+          <h3 class="letter-greeting" data-text="letter.greeting"></h3>
+          <div class="letter-body" id="letter-body"></div>
+          <p class="letter-closing" data-text="letter.closing"></p>
+          <p class="letter-sign" data-text="letter.signature"></p>
+          <div class="btn-row letter-actions">
+            <button class="btn ghost" id="skip-typing" data-text="letter.skip"></button>
+            <button class="btn next-btn" id="letter-next" data-text="letter.next" hidden></button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== 4. NHỮNG BỨC VẼ ===================== -->
+    <section class="scene" id="scene-drawings" data-scene="4">
+      <div class="scene-inner wide">
+        <h2 class="title-script small" data-text="drawings.title"></h2>
+
+        <div class="drawings-grid" id="drawings">
+          <!-- 1. Bông hồng -->
+          <figure class="drawing-card">
+            <svg viewBox="0 0 200 200" aria-label="Bông hồng">
+              <path class="ink-green" d="M100 190 C98 162 104 140 100 112"/>
+              <path class="ink-green" d="M100 160 C80 158 68 146 66 132 C80 134 94 144 100 160 Z" data-fill="#5fbf7a" data-fo=".35"/>
+              <path class="ink-green" d="M68 134 C80 142 90 150 98 158"/>
+              <path class="ink-green" d="M101 150 C118 148 132 138 136 122 C122 124 108 134 101 150 Z" data-fill="#5fbf7a" data-fo=".35"/>
+              <path class="ink-green" d="M134 124 C122 130 110 140 102 148"/>
+              <path class="ink-green" d="M100 112 L86 124 M100 112 L114 124 M100 112 L100 128"/>
+              <path class="ink-pink" d="M70 88 C64 60 84 46 100 48 C116 46 136 60 130 88 C124 104 110 112 100 112 C90 112 76 104 70 88 Z" data-fill="#ff4d6d" data-fo=".32"/>
+              <path class="ink-pink" d="M100 112 C90 96 96 76 110 72 C124 68 130 84 118 90 C108 94 100 86 106 78 C110 72 118 78 112 82"/>
+              <path class="ink-pink" d="M74 72 C86 80 90 96 92 108"/>
+              <path class="ink-pink" d="M126 72 C114 80 110 96 108 108"/>
+              <path class="ink-gold" d="M46 48 L46 60 M40 54 L52 54 M156 36 L156 46 M151 41 L161 41"/>
+            </svg>
+            <figcaption class="drawing-caption"></figcaption>
+          </figure>
+
+          <!-- 2. Gấu bông -->
+          <figure class="drawing-card">
+            <svg viewBox="0 0 200 200" aria-label="Gấu bông">
+              <path class="ink-brown" d="M55 60 m-20 0 a20 20 0 1 0 40 0 a20 20 0 1 0 -40 0" data-fill="#e0a96d" data-fo=".3"/>
+              <path class="ink-brown" d="M145 60 m-20 0 a20 20 0 1 0 40 0 a20 20 0 1 0 -40 0" data-fill="#e0a96d" data-fo=".3"/>
+              <path class="ink-brown" d="M55 60 m-10 0 a10 10 0 1 0 20 0 a10 10 0 1 0 -20 0" data-fill="#ffd8c2" data-fo=".5"/>
+              <path class="ink-brown" d="M145 60 m-10 0 a10 10 0 1 0 20 0 a10 10 0 1 0 -20 0" data-fill="#ffd8c2" data-fo=".5"/>
+              <path class="ink-brown" d="M100 105 m-58 0 a58 58 0 1 0 116 0 a58 58 0 1 0 -116 0" data-fill="#e0a96d" data-fo=".22"/>
+              <path class="ink-brown" d="M100 125 m-26 0 a26 20 0 1 0 52 0 a26 20 0 1 0 -52 0" data-fill="#ffd8c2" data-fo=".45"/>
+              <path class="ink-brown" d="M90 116 Q100 112 110 116 Q106 128 100 130 Q94 128 90 116 Z" data-fill="#4a2c1a" data-fo=".9"/>
+              <path class="ink-brown" d="M100 130 L100 138 M100 138 C94 142 88 142 84 136 M100 138 C106 142 112 142 116 136"/>
+              <path class="ink-brown" d="M80 100 m-5 0 a5 5 0 1 0 10 0 a5 5 0 1 0 -10 0" data-fill="#2b1b12" data-fo=".95"/>
+              <path class="ink-brown" d="M120 100 m-5 0 a5 5 0 1 0 10 0 a5 5 0 1 0 -10 0" data-fill="#2b1b12" data-fo=".95"/>
+              <path class="ink-pink" d="M72 118 m-7 0 a7 4 0 1 0 14 0 a7 4 0 1 0 -14 0" data-fill="#ff8fab" data-fo=".6"/>
+              <path class="ink-pink" d="M128 118 m-7 0 a7 4 0 1 0 14 0 a7 4 0 1 0 -14 0" data-fill="#ff8fab" data-fo=".6"/>
+              <path class="ink-pink" d="M100 166 L76 154 L76 178 Z M100 166 L124 154 L124 178 Z" data-fill="#ff4d6d" data-fo=".6"/>
+              <path class="ink-pink" d="M100 166 m-5 0 a5 5 0 1 0 10 0 a5 5 0 1 0 -10 0" data-fill="#ff8fab" data-fo=".9"/>
+            </svg>
+            <figcaption class="drawing-caption"></figcaption>
+          </figure>
+
+          <!-- 3. Hai trái tim -->
+          <figure class="drawing-card">
+            <svg viewBox="0 0 200 200" aria-label="Hai trái tim">
+              <path class="ink-pink" d="M86 150 C50 122 30 100 30 72 C30 52 46 38 64 38 C76 38 84 46 86 56 C88 46 96 38 108 38 C126 38 142 52 142 72 C142 100 122 122 86 150 Z" data-fill="#ff4d6d" data-fo=".35"/>
+              <path class="ink-gold" d="M130 160 C104 140 90 124 90 104 C90 90 101 80 114 80 C123 80 128 86 130 92 C132 86 137 80 146 80 C159 80 170 90 170 104 C170 124 156 140 130 160 Z" data-fill="#ffd166" data-fo=".35"/>
+              <path class="ink-white" d="M60 52 C54 56 50 62 50 70"/>
+              <path class="ink-white" d="M110 92 C106 95 103 99 103 104"/>
+              <path class="ink-gold" d="M160 36 L160 50 M153 43 L167 43 M36 150 L36 160 M31 155 L41 155 M170 170 L170 180 M165 175 L175 175"/>
+              <path class="ink-white" d="M70 176 C84 168 100 168 114 176"/>
+            </svg>
+            <figcaption class="drawing-caption"></figcaption>
+          </figure>
+
+          <!-- 4. Hai đứa mình -->
+          <figure class="drawing-card">
+            <svg viewBox="0 0 200 200" aria-label="Hai đứa mình nắm tay">
+              <path class="ink-gold" d="M150 30 A26 26 0 1 0 170 70 A20 20 0 1 1 150 30 Z" data-fill="#ffd166" data-fo=".5"/>
+              <path class="ink-gold" d="M30 40 L30 48 M26 44 L34 44 M60 24 L60 30 M57 27 L63 27 M180 90 L180 98 M176 94 L184 94"/>
+              <path class="ink-white" d="M20 178 C60 170 140 170 180 178"/>
+              <path class="ink-white" d="M72 84 m-11 0 a11 11 0 1 0 22 0 a11 11 0 1 0 -22 0"/>
+              <path class="ink-white" d="M72 95 L72 140 M72 104 L58 126 M72 104 L92 122 M72 140 L62 172 M72 140 L82 172"/>
+              <path class="ink-white" d="M118 92 m-10 0 a10 10 0 1 0 20 0 a10 10 0 1 0 -20 0"/>
+              <path class="ink-white" d="M126 86 C136 90 136 102 130 108"/>
+              <path class="ink-white" d="M118 102 L118 128 M118 110 L96 122 M118 110 L132 128"/>
+              <path class="ink-white" d="M118 128 L104 158 L132 158 Z" data-fill="#ff8fab" data-fo=".4"/>
+              <path class="ink-white" d="M112 158 L110 174 M124 158 L126 174"/>
+              <path class="ink-pink" d="M94 116 C88 110 86 106 88 103 C90 100 93 101 94 104 C95 101 98 100 100 103 C102 106 100 110 94 116 Z" data-fill="#ff4d6d" data-fo=".9"/>
+            </svg>
+            <figcaption class="drawing-caption"></figcaption>
+          </figure>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn ghost" id="redraw-btn" data-text="drawings.replay"></button>
+          <button class="btn next-btn" id="drawings-next" data-text="drawings.next"></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 5. NHỮNG ĐIỀU ANH YÊU Ở EM ===================== -->
+    <section class="scene" id="scene-reasons" data-scene="5">
+      <div class="scene-inner wide">
+        <h2 class="title-script small" data-text="reasons.title"></h2>
+        <p class="subtitle" data-text="reasons.hint"></p>
+        <div class="reasons-stage" id="reasons-stage">
+          <div class="reason-card" id="reason-card" hidden><p id="reason-text"></p></div>
+        </div>
+        <p class="reasons-progress" id="reasons-progress"></p>
+        <div class="btn-row">
+          <button class="btn next-btn" data-text="reasons.next"></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 6. KẾT ===================== -->
+    <section class="scene" id="scene-finale" data-scene="6">
+      <div class="scene-inner finale-inner">
+        <p class="kicker" data-text="finale.tag"></p>
+        <h2 class="finale-title" id="finale-title"></h2>
+        <p class="subtitle" data-text="finale.subtitle"></p>
+        <p class="date-badge" data-text="dateText"></p>
+        <div class="btn-row">
+          <button class="btn" id="boom-btn" data-text="finale.boom"></button>
+          <button class="btn ghost" id="replay-btn" data-text="finale.replay"></button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="dots" id="dots" aria-label="Các màn"></nav>
+  <button id="music-toggle" class="music-toggle no-fire" aria-label="Bật/tắt nhạc" hidden>♪</button>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,285 @@
+/* ============================================================
+   Quà 20-10 · style.css
+   ============================================================ */
+:root{
+  --bg1:#0a0e24; --bg2:#2a0f3a; --bg3:#4a1942;
+  --pink:#ff6b9d; --pink-2:#ff4d6d; --pink-3:#ffb3c6; --gold:#ffd166; --cream:#fff5f8;
+  --text:#fff5f8; --muted:rgba(255,245,248,.74);
+  --font-script:'Dancing Script','Segoe Script','Brush Script MT',cursive;
+  --font-body:'Quicksand','Segoe UI',system-ui,-apple-system,sans-serif;
+  --font-serif:'Playfair Display',Georgia,serif;
+  --ease-out:cubic-bezier(.22,1,.36,1);
+  --ease-back:cubic-bezier(.34,1.56,.64,1);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; font-family:var(--font-body); color:var(--text);
+  background:
+    radial-gradient(1200px 800px at 75% -10%, rgba(120,40,120,.75) 0%, transparent 60%),
+    radial-gradient(900px 700px at 5% 110%, rgba(30,50,130,.7) 0%, transparent 60%),
+    linear-gradient(160deg, var(--bg1) 0%, var(--bg2) 55%, var(--bg3) 100%);
+  overflow:hidden; -webkit-font-smoothing:antialiased; -webkit-tap-highlight-color:transparent;
+}
+[hidden]{display:none !important}
+button{font-family:inherit}
+
+#bg-canvas,#fx-canvas{position:fixed; inset:0; width:100%; height:100%; pointer-events:none}
+#bg-canvas{z-index:0}
+#fx-canvas{z-index:1}
+.vignette{position:fixed; inset:0; z-index:1; pointer-events:none;
+  background:radial-gradient(ellipse at center, transparent 50%, rgba(4,2,14,.6) 100%)}
+#app{position:relative; z-index:2}
+
+/* ---------- Scenes ---------- */
+.scene{
+  position:fixed; inset:0; display:flex; padding:max(18px, env(safe-area-inset-top)) 18px max(96px, calc(env(safe-area-inset-bottom) + 72px));
+  scroll-padding:24px 0 100px;
+  opacity:0; visibility:hidden; pointer-events:none;
+  transform:translateY(26px) scale(.985);
+  transition:opacity .9s ease, transform .9s var(--ease-out), visibility 0s linear .9s;
+  overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch;
+}
+.scene.is-active{opacity:1; visibility:visible; pointer-events:auto; transform:none; transition-delay:0s}
+.scene.is-leaving{opacity:0; transform:translateY(-26px) scale(.985)}
+.scene-inner{width:min(100%, 720px); margin:auto; text-align:center}
+.scene-inner.wide{width:min(100%, 1000px)}
+
+/* ---------- Typography ---------- */
+.kicker{letter-spacing:.38em; text-transform:uppercase; font-size:.72rem; color:var(--gold); margin:0 0 .7rem; font-weight:700}
+.date-badge{display:inline-block; padding:.4rem 1.1rem; border:1px solid rgba(255,255,255,.28); border-radius:999px;
+  font-family:var(--font-serif); font-style:italic; letter-spacing:.22em; color:var(--muted); font-size:.85rem;
+  background:rgba(255,255,255,.06); backdrop-filter:blur(6px); margin:0}
+.title-script{font-family:var(--font-script); font-weight:700; font-size:clamp(2.8rem, 9.5vw, 5.4rem); text-wrap:balance; line-height:1.15; margin:.5rem 0 .2rem; color:#fff;
+  text-shadow:0 0 18px rgba(255,107,157,.7), 0 0 60px rgba(255,77,109,.4), 0 2px 0 rgba(0,0,0,.25)}
+.title-script.small{font-size:clamp(2.3rem, 7vw, 4rem); margin-top:0}
+.subtitle{font-size:clamp(1rem, 2.6vw, 1.25rem); color:var(--muted); margin:.2rem 0 1.4rem; font-weight:500; line-height:1.5}
+.hint{color:var(--muted); font-size:.9rem; margin:1rem 0 0; animation:pulseText 2.4s ease-in-out infinite}
+.lines{font-family:var(--font-script); font-size:clamp(1.25rem, 3.4vw, 1.75rem); line-height:1.5; margin:.6rem auto 0; color:#fff; max-width:34em}
+.lines span{display:block; opacity:0; transform:translateY(10px); transition:opacity .8s ease, transform .8s var(--ease-out)}
+.is-bloomed ~ .lines span, .lines.is-shown span{opacity:1; transform:none}
+
+@keyframes pulseText{0%,100%{opacity:.55}50%{opacity:1}}
+
+/* ---------- Buttons ---------- */
+.btn{appearance:none; border:0; cursor:pointer; font:700 1rem var(--font-body); color:#fff; padding:.95rem 1.9rem; border-radius:999px;
+  background:linear-gradient(135deg, #ff6b9d, #ff4d6d 55%, #f72585);
+  box-shadow:0 10px 30px rgba(255,77,109,.38), inset 0 1px 0 rgba(255,255,255,.35);
+  transition:transform .25s var(--ease-out), box-shadow .25s; position:relative; overflow:hidden; letter-spacing:.02em}
+.btn::after{content:''; position:absolute; top:0; bottom:0; left:-80%; width:50%;
+  background:linear-gradient(100deg, transparent, rgba(255,255,255,.45), transparent); transform:skewX(-20deg);
+  animation:shine 3.2s ease-in-out infinite}
+.btn:hover{transform:translateY(-2px) scale(1.03); box-shadow:0 16px 42px rgba(255,77,109,.55)}
+.btn:active{transform:translateY(0) scale(.98)}
+.btn.ghost{background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.3); box-shadow:none; backdrop-filter:blur(6px)}
+.btn.ghost::after{display:none}
+.btn-row{display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; margin-top:1.4rem}
+.btn-row.delayed{opacity:0; animation:fadeIn 1s ease 2.6s forwards}
+@keyframes shine{0%{left:-80%}45%,100%{left:140%}}
+@keyframes fadeIn{to{opacity:1}}
+
+/* ---------- Gift box ---------- */
+.gift-box{position:relative; width:170px; height:170px; margin:1.6rem auto 0; background:none; border:0; cursor:pointer; display:block;
+  animation:giftBounce 2.6s ease-in-out infinite}
+.gift-box:focus-visible{outline:2px solid var(--gold); outline-offset:8px; border-radius:20px}
+.gift-glow{position:absolute; inset:-40px; border-radius:50%; z-index:0;
+  background:radial-gradient(circle, rgba(255,209,102,.4) 0%, rgba(255,107,157,.25) 35%, transparent 65%);
+  animation:glowPulse 2.6s ease-in-out infinite}
+.gift-body{position:absolute; left:18px; right:18px; bottom:6px; height:100px; z-index:1;
+  background:linear-gradient(180deg, #ff7aa8, #e8396b); border-radius:0 0 14px 14px;
+  box-shadow:inset 0 -14px 0 rgba(0,0,0,.14), 0 20px 40px rgba(0,0,0,.35)}
+.gift-ribbon-v,.gift-lid::after{position:absolute; left:50%; top:0; bottom:0; width:26px; transform:translateX(-50%);
+  background:linear-gradient(90deg, #ffe29a, #ffd166 50%, #ffb703); content:''}
+.gift-lid{position:absolute; left:6px; right:6px; top:40px; height:40px; z-index:2;
+  background:linear-gradient(180deg, #ff9bbd, #ff5c8a); border-radius:10px;
+  transform-origin:left bottom; transition:transform 1s var(--ease-back), opacity .7s ease .2s;
+  box-shadow:0 10px 24px rgba(0,0,0,.28)}
+.gift-lid::after{border-radius:10px 10px 0 0}
+.gift-bow{position:absolute; left:50%; top:-28px; width:90px; height:40px; transform:translateX(-50%)}
+.gift-bow i{position:absolute; top:4px; width:40px; height:30px; border:8px solid #ffd166; border-radius:60% 60% 20% 60%;
+  background:rgba(255,209,102,.15); box-sizing:border-box}
+.gift-bow i:first-child{left:4px; transform:rotate(-30deg)}
+.gift-bow i:nth-child(2){right:4px; transform:scaleX(-1) rotate(-30deg)}
+.gift-bow b{position:absolute; left:50%; top:14px; width:18px; height:18px; transform:translateX(-50%); border-radius:50%; background:#ffb703;
+  box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.gift-box.is-open{animation:none}
+.gift-box.is-open .gift-lid{transform:translate(-30px,-160px) rotate(-38deg); opacity:0}
+.gift-box.is-open .gift-body{animation:giftOut .9s ease .3s forwards}
+.gift-box.is-open .gift-glow{animation:glowOut .9s ease forwards}
+@keyframes giftBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes glowPulse{0%,100%{transform:scale(.9); opacity:.7}50%{transform:scale(1.15); opacity:1}}
+@keyframes giftOut{to{transform:translateY(40px) scale(.6); opacity:0}}
+@keyframes glowOut{to{transform:scale(2.4); opacity:0}}
+
+/* ---------- Garden (flowers + bear) ---------- */
+.garden{position:relative; display:flex; align-items:flex-end; justify-content:center; gap:clamp(0px, 2vw, 28px); margin:.2rem auto 0; width:100%}
+.garden svg{height:auto; display:block}
+#bouquet{width:min(54vw, 400px); max-height:52vh; filter:drop-shadow(0 20px 30px rgba(0,0,0,.35))}
+#bear{width:min(40vw, 270px); max-height:46vh; filter:drop-shadow(0 20px 30px rgba(0,0,0,.35));
+  opacity:0; transform:translateY(50px) scale(.85); transition:opacity .8s ease 1.3s, transform 1s var(--ease-back) 1.3s}
+.garden.is-bloomed #bear{opacity:1; transform:none}
+.sparkles i{position:absolute; left:var(--x); top:var(--y); width:14px; height:14px; opacity:0; pointer-events:none;
+  background:
+    linear-gradient(#fff,#fff) center/2px 100% no-repeat,
+    linear-gradient(#fff,#fff) center/100% 2px no-repeat;
+  filter:drop-shadow(0 0 6px #ffd166); animation:twinkle 2.2s ease-in-out var(--d) infinite}
+.garden.is-bloomed .sparkles i{opacity:1}
+@keyframes twinkle{0%,100%{transform:scale(.3) rotate(0deg); opacity:.2}50%{transform:scale(1) rotate(90deg); opacity:1}}
+
+/* Bó hoa (phần tử sinh bằng JS) */
+#bouquet .stem{fill:none; stroke-linecap:round; stroke-dasharray:var(--len) var(--len);
+  stroke-dashoffset:var(--len); transition:stroke-dashoffset 1.3s ease-in-out var(--d, 0s)}
+.is-bloomed #bouquet .stem{stroke-dashoffset:0}
+#bouquet .flower,#bouquet .leaf,#bouquet .breath,#bouquet .wrap-layer,#bouquet .ribbon{opacity:0; transform-box:fill-box; transform-origin:center}
+.is-bloomed #bouquet .flower{animation:bloom 1.25s var(--ease-back) var(--d) both}
+.is-bloomed #bouquet .leaf{animation:leafIn .9s var(--ease-back) var(--d) both}
+.is-bloomed #bouquet .breath{animation:popIn .6s ease-out var(--d) both}
+.is-bloomed #bouquet .wrap-layer{animation:fadeUp .9s ease var(--d) both}
+.is-bloomed #bouquet .ribbon{animation:popIn .7s var(--ease-back) var(--d) both}
+#bouquet .bouquet-root{transform-box:view-box; transform-origin:200px 480px}
+.is-bloomed #bouquet .bouquet-root{animation:sway 5s ease-in-out 3s infinite}
+@keyframes bloom{0%{opacity:0; transform:scale(0) rotate(-50deg)}55%{opacity:1}100%{opacity:1; transform:scale(1) rotate(0)}}
+@keyframes leafIn{0%{opacity:0; transform:scale(0)}100%{opacity:1; transform:scale(1)}}
+@keyframes popIn{0%{opacity:0; transform:scale(0)}100%{opacity:1; transform:scale(1)}}
+@keyframes fadeUp{0%{opacity:0; transform:translateY(14px)}100%{opacity:1; transform:none}}
+@keyframes sway{0%,100%{transform:rotate(-1.4deg)}50%{transform:rotate(1.4deg)}}
+
+/* Gấu cử động */
+#bear .bear-head,#bear .bear-arm-wave,#bear .bear-eyes,#bear .bear-heart{transform-box:view-box}
+#bear .bear-head{transform-origin:150px 190px; animation:headTilt 4.2s ease-in-out infinite}
+#bear .bear-arm-wave{transform-origin:92px 210px; animation:wave 1.5s ease-in-out infinite}
+#bear .bear-eyes{transform-origin:150px 112px; animation:blink 4.6s ease-in-out infinite}
+#bear .bear-heart{transform-origin:236px 230px; animation:heartBeat 1.25s ease-in-out infinite}
+@keyframes headTilt{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+@keyframes wave{0%,100%{transform:rotate(-16deg)}50%{transform:rotate(18deg)}}
+@keyframes blink{0%,91%,100%{transform:scaleY(1)}94%{transform:scaleY(.08)}97%{transform:scaleY(1)}}
+@keyframes heartBeat{0%,100%{transform:scale(1)}14%{transform:scale(1.16)}28%{transform:scale(1)}42%{transform:scale(1.12)}60%{transform:scale(1)}}
+
+/* ---------- Letter ---------- */
+.envelope-wrap{display:flex; flex-direction:column; align-items:center; gap:1.8rem; margin-top:1.4rem}
+.envelope{position:relative; width:min(84vw, 340px); aspect-ratio:340/220; perspective:1000px; cursor:pointer;
+  filter:drop-shadow(0 24px 40px rgba(0,0,0,.45)); animation:envFloat 3s ease-in-out infinite}
+.envelope:focus-visible{outline:2px solid var(--gold); outline-offset:10px; border-radius:14px}
+.env-back{position:absolute; inset:0; background:linear-gradient(180deg, #ff8fab, #ff6b9d); border-radius:12px}
+.env-letter{position:absolute; left:6%; right:6%; top:8%; height:88%; z-index:1; background:linear-gradient(180deg,#fffafc,#fff0f4);
+  border-radius:8px; display:grid; place-items:center; font-size:3rem; color:var(--pink-2);
+  box-shadow:0 4px 20px rgba(0,0,0,.15); transition:transform 1s var(--ease-out) .55s}
+.env-letter span{animation:heartBeat 1.4s ease-in-out infinite}
+.env-front{position:absolute; inset:0; z-index:2; border-radius:12px;
+  clip-path:polygon(0 0, 50% 58%, 100% 0, 100% 100%, 0 100%);
+  background:linear-gradient(180deg, #ff6b9d, #ff4d6d)}
+.env-flap{position:absolute; left:0; right:0; top:0; height:58%; z-index:3; border-radius:12px 12px 0 0;
+  clip-path:polygon(0 0, 100% 0, 50% 100%); background:linear-gradient(180deg, #ff5c8a, #e8396b);
+  transform-origin:top center; backface-visibility:hidden; transition:transform .9s var(--ease-back)}
+.env-seal{position:absolute; left:50%; top:58%; z-index:4; width:46px; height:46px; border-radius:50%;
+  transform:translate(-50%,-50%); display:grid; place-items:center; color:#b23a48; font-size:1.3rem;
+  background:radial-gradient(circle at 35% 35%, #ffe29a, #ffb703); box-shadow:0 4px 10px rgba(0,0,0,.25);
+  transition:opacity .4s, transform .4s}
+.envelope.is-open{animation:none}
+.envelope.is-open .env-flap{transform:rotateX(180deg)}
+.envelope.is-open .env-seal{opacity:0; transform:translate(-50%,-50%) scale(0)}
+.envelope.is-open .env-letter{transform:translateY(-78%)}
+@keyframes envFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+.letter-paper{width:min(100%, 680px); margin:.6rem auto 1rem; text-align:left; position:relative;
+  background:linear-gradient(180deg,#fffafc,#fff1f5); color:#4a2030; border-radius:22px;
+  padding:clamp(1.4rem, 4vw, 2.6rem) clamp(1.2rem, 4vw, 2.6rem);
+  box-shadow:0 30px 80px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.7);
+  opacity:0; transform:translateY(30px) scale(.96); transition:opacity .8s ease, transform .8s var(--ease-out)}
+.letter-paper::before{content:'❤'; position:absolute; right:1.2rem; top:.9rem; color:rgba(255,77,109,.25); font-size:1.4rem}
+.letter-paper.is-shown{opacity:1; transform:none}
+.letter-greeting{font-family:var(--font-script); font-weight:700; font-size:clamp(1.9rem, 5vw, 2.5rem); color:#e63e6d; margin:0 0 .8rem}
+.letter-body p{font-family:var(--font-script); font-weight:500; font-size:clamp(1.2rem, 3.6vw, 1.5rem); line-height:1.65; margin:0 0 .9rem; min-height:1.65em}
+.caret{display:inline-block; width:2px; height:1.05em; background:#e63e6d; margin-left:2px; vertical-align:-.15em; animation:blinkCaret .9s steps(2) infinite}
+.letter-closing{font-family:var(--font-script); font-weight:700; font-size:clamp(1.5rem, 4.4vw, 2rem); color:#e63e6d; margin:1.2rem 0 .1rem; opacity:0; transition:opacity .8s}
+.letter-sign{font-family:var(--font-script); font-weight:700; font-size:clamp(1.6rem, 4.6vw, 2.2rem); color:#b23a48; text-align:right; margin:0; opacity:0; transition:opacity .8s .3s}
+.letter-paper.is-finished .letter-closing,.letter-paper.is-finished .letter-sign{opacity:1}
+.letter-actions{justify-content:flex-end}
+.letter-paper .btn.ghost{color:#b23a48; border-color:rgba(178,58,72,.35); background:rgba(255,255,255,.5)}
+@keyframes blinkCaret{to{visibility:hidden}}
+
+/* ---------- Drawings ---------- */
+.drawings-grid{display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:clamp(10px, 1.6vw, 20px); width:min(100%, 1040px); margin:.2rem auto 0}
+@media (max-width:760px){ .drawings-grid{grid-template-columns:repeat(2, minmax(0,1fr)); width:min(100%, 560px)} }
+.drawing-card{margin:0; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.16); border-radius:20px; padding:clamp(8px, 1.6vw, 14px);
+  backdrop-filter:blur(8px); opacity:0; transform:translateY(20px) scale(.96); transition:opacity .7s ease, transform .7s var(--ease-out);
+  box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.drawing-card.is-shown{opacity:1; transform:none}
+.drawing-card svg{width:100%; height:auto; display:block; overflow:visible}
+.drawing-card svg path{fill:none; stroke:#fff; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; transition:fill-opacity .9s ease}
+.drawing-card svg .ink-pink{stroke:#ff8fab}
+.drawing-card svg .ink-gold{stroke:#ffd166}
+.drawing-card svg .ink-green{stroke:#8fe3a4}
+.drawing-card svg .ink-brown{stroke:#f0bf8a}
+.drawing-card svg .ink-white{stroke:#fff}
+.drawing-card svg .pen{fill:#fff; stroke:none; filter:drop-shadow(0 0 5px #ffd166) drop-shadow(0 0 10px #ff6b9d)}
+.drawing-card svg.is-done{filter:drop-shadow(0 0 10px rgba(255,107,157,.35))}
+.drawing-caption{font-family:var(--font-script); font-weight:600; font-size:clamp(1rem, 2.8vw, 1.3rem); margin:.5rem 0 .1rem; min-height:1.5em; color:#fff; line-height:1.3}
+
+/* ---------- Reasons (tap the hearts) ---------- */
+.reasons-stage{position:relative; width:min(100%, 760px); height:min(52vh, 460px); min-height:300px; margin:0 auto}
+.reason-heart{position:absolute; left:var(--x); top:var(--y); width:var(--s); height:var(--s); margin:calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+  border:0; background:transparent; padding:0; cursor:pointer; color:var(--c); font-size:var(--s); line-height:1; display:grid; place-items:center;
+  filter:drop-shadow(0 0 10px rgba(255,107,157,.75)); animation:floatHeart var(--dur) ease-in-out var(--d) infinite, heartIn .7s var(--ease-back) var(--in) both;
+  transition:transform .3s var(--ease-back), opacity .4s}
+.reason-heart::before{content:'♥'; display:block; transform:translateY(-3%)}
+.reason-heart:hover{filter:drop-shadow(0 0 16px rgba(255,107,157,1)) brightness(1.1)}
+.reason-heart.is-popped{animation:none; transform:scale(0); opacity:0; pointer-events:none}
+.reason-card{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:min(82%, 440px);
+  background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.22); border-radius:22px; padding:1.2rem 1.4rem; backdrop-filter:blur(10px);
+  box-shadow:0 20px 60px rgba(0,0,0,.35), 0 0 40px rgba(255,107,157,.25)}
+.reason-card p{font-family:var(--font-script); font-weight:600; font-size:clamp(1.3rem, 4vw, 1.8rem); line-height:1.4; margin:0; color:#fff}
+.reason-card.is-pop{animation:cardPop .6s var(--ease-back) both}
+.reasons-progress{color:var(--muted); font-size:.9rem; margin:.6rem 0 0; letter-spacing:.08em}
+@keyframes floatHeart{0%,100%{translate:0 0}50%{translate:0 -14px}}
+@keyframes heartIn{from{opacity:0; scale:0}to{opacity:1; scale:1}}
+@keyframes cardPop{from{opacity:0; transform:translate(-50%,-50%) scale(.6)}to{opacity:1; transform:translate(-50%,-50%) scale(1)}}
+
+/* ---------- Finale ---------- */
+.finale-inner{padding-top:clamp(38vh, 44vh, 48vh)}
+.finale-title{font-family:var(--font-script); font-weight:700; font-size:clamp(3.4rem, 13vw, 8rem); margin:0; line-height:1.15; color:#fff;
+  text-shadow:0 0 20px rgba(255,107,157,.95), 0 0 70px rgba(255,77,109,.6), 0 3px 0 rgba(0,0,0,.25)}
+.finale-title span{display:inline-block; opacity:0; transform:translateY(40px) rotate(-10deg) scale(.6);
+  animation:letterIn .9s var(--ease-back) forwards; animation-delay:calc(var(--i) * 90ms + .5s)}
+.finale-title span.space{width:.3em}
+.finale-inner .subtitle,.finale-inner .date-badge,.finale-inner .btn-row,.finale-inner .kicker{opacity:0; animation:fadeIn 1s ease forwards}
+.finale-inner .kicker{animation-delay:.2s}
+.finale-inner .subtitle{animation-delay:1.9s}
+.finale-inner .date-badge{animation-delay:2.2s}
+.finale-inner .btn-row{animation-delay:2.6s}
+@keyframes letterIn{to{opacity:1; transform:none}}
+
+/* ---------- Dots nav & music ---------- */
+.dots{position:fixed; right:8px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:2px; z-index:5}
+.dots button{width:24px; height:24px; border:0; background:transparent; padding:0; cursor:pointer; position:relative}
+.dots button::before{content:''; position:absolute; left:50%; top:50%; width:10px; height:10px; border-radius:50%; transform:translate(-50%,-50%);
+  border:1px solid rgba(255,255,255,.55); transition:transform .3s, background .3s, box-shadow .3s}
+.dots button:hover::before{background:rgba(255,255,255,.35)}
+.dots button.is-active::before{background:var(--pink); border-color:var(--pink); box-shadow:0 0 12px var(--pink); transform:translate(-50%,-50%) scale(1.35)}
+.music-toggle{position:fixed; top:max(14px, env(safe-area-inset-top)); right:14px; z-index:6; width:44px; height:44px; border-radius:50%;
+  border:1px solid rgba(255,255,255,.3); background:rgba(255,255,255,.1); color:#fff; font-size:1.25rem; cursor:pointer; backdrop-filter:blur(8px);
+  display:grid; place-items:center; transition:transform .25s, background .25s}
+.music-toggle:hover{transform:scale(1.08); background:rgba(255,255,255,.18)}
+.music-toggle.is-on{animation:musicPulse 1.6s ease-in-out infinite; box-shadow:0 0 16px rgba(255,107,157,.6)}
+.music-toggle.is-off{opacity:.65}
+@keyframes musicPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+
+/* ---------- Responsive ---------- */
+@media (max-width:640px){
+  .dots{right:auto; left:50%; top:auto; bottom:max(10px, env(safe-area-inset-bottom)); transform:translateX(-50%); flex-direction:row; gap:4px;
+    padding:4px 10px; border-radius:999px; background:rgba(20,10,40,.45); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.12)}
+  .btn{padding:.85rem 1.5rem; font-size:.95rem}
+  .garden{gap:0}
+  #bouquet{width:58vw}
+  #bear{width:42vw}
+  .letter-actions{justify-content:center}
+}
+@media (max-height:640px){
+  .title-script{font-size:clamp(2.2rem, 8vw, 4rem)}
+  .title-script.small{font-size:clamp(1.8rem, 6vw, 3rem)}
+  #bouquet{max-height:42vh} #bear{max-height:38vh}
+  .finale-inner{padding-top:34vh}
+}
+@media (prefers-reduced-motion: reduce){
+  .gift-box,.envelope,.btn::after,.hint{animation:none}
+}
